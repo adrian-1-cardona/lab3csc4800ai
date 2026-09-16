@@ -96,6 +96,9 @@ def calculate_path_cost(
     """Add the action costs along a path."""
 
     return sum(
-        problem.step_cost(current, neighbor)
-        for current, neighbor in zip(path, path[1:])
+        (
+            problem.step_cost(current, neighbor)
+            for current, neighbor in zip(path, path[1:])
+        ),
+        0.0,
     )

@@ -110,6 +110,7 @@ def _display_optional(value: int | None) -> str:
 def _display_cost(value: float | None) -> str:
     if value is None:
         return "-"
-    if value.is_integer():
-        return str(int(value))
-    return f"{value:.3f}"
+    number = float(value)
+    if number.is_integer():
+        return str(int(number))
+    return f"{number:.3f}"

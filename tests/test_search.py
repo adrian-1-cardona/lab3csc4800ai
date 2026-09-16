@@ -129,6 +129,38 @@ class SearchAlgorithmTests(unittest.TestCase):
             iddfs(graph)
         self.assertTrue(iddfs(graph, max_depth=1).found)
 
+    def test_iddfs_reopens_a_state_found_at_a_shallower_depth(self) -> None:
+        graph = SimpleGraph(
+            {
+                "A": (("B", 1.0), ("C", 1.0)),
+                "B": (("D", 1.0),),
+                "C": (("X", 1.0),),
+                "D": (("X", 1.0),),
+                "X": (("G", 1.0),),
+                "G": (),
+            }
+        )
+
+        result = iddfs(graph, max_depth=3)
+
+        self.assertTrue(result.found)
+        self.assertEqual(result.path, ("A", "C", "X", "G"))
+        self.assertEqual(result.depth, 3)
+
+    def test_iddfs_stops_after_finishing_an_unreachable_cycle(self) -> None:
+        graph = SimpleGraph(
+            {
+                "A": (("B", 1.0),),
+                "B": (("A", 1.0),),
+                "G": (),
+            }
+        )
+
+        result = iddfs(graph, max_depth=10)
+
+        self.assertFalse(result.found)
+        self.assertEqual(result.metrics.iterations, 2)
+
     def test_all_algorithms_report_failure_on_an_unreachable_grid(self) -> None:
         grid = GridMap.uniform(2, 2, blocked={(0, 1), (1, 0)})
 
@@ -149,9 +181,13 @@ class SearchAlgorithmTests(unittest.TestCase):
                 self.assertEqual(result.path, ((0, 0),))
                 self.assertEqual(result.depth, 0)
                 self.assertEqual(result.cost, 0.0)
+                self.assertIsInstance(result.cost, float)
                 self.assertEqual(result.metrics.expanded_nodes, 0)
                 self.assertEqual(result.metrics.generated_nodes, 1)
                 self.assertEqual(result.metrics.max_frontier_size, 1)
+
+        table = format_results_table(compare_algorithms(grid))
+        self.assertIn("| 0", table)
 
     def test_metrics_are_present_for_every_algorithm(self) -> None:
         results = compare_algorithms(GridMap.uniform(3, 3))

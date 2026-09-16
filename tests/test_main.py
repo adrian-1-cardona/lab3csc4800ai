@@ -52,6 +52,21 @@ class MainProgramTests(unittest.TestCase):
         self.assertIn("ucs path", output)
         self.assertIn("*", output)
 
+    def test_main_handles_a_one_cell_map(self) -> None:
+        exit_code, output = self.run_main(
+            "--rows",
+            "1",
+            "--cols",
+            "1",
+            "--hide-paths",
+        )
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("S", output)
+        self.assertIn("BFS", output)
+        self.assertIn("IDDFS", output)
+        self.assertNotIn("Traceback", output)
+
     def test_main_reports_when_a_depth_limit_is_too_small(self) -> None:
         exit_code, output = self.run_main(
             "--algorithm",
