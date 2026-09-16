@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools==75.8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uninformed-search-lab"
+version = "1.0.0"
+description = "A comparison of uninformed search algorithms on weighted grid maps"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
