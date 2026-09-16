@@ -1,6 +1,7 @@
 """Uninformed search algorithms for grid navigation."""
 
 from uninformed_search.algorithms.bfs import bfs, breadth_first_search
+from uninformed_search.algorithms.dfs import depth_first_search, dfs
 from uninformed_search.grid import Coordinate, GridMap, generate_random_grid
 from uninformed_search.models import SearchMetrics, SearchProblem, SearchResult
 
@@ -12,6 +13,8 @@ __all__ = [
     "SearchResult",
     "bfs",
     "breadth_first_search",
+    "depth_first_search",
+    "dfs",
     "generate_random_grid",
 ]
 __version__ = "1.0.0"
